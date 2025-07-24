@@ -16,8 +16,18 @@ async function removeSandbox(sandboxId: string) {
   });
 
   try {
+    console.log(`Finding sandbox: ${sandboxId}...`);
+    // List all sandboxes and find the one with matching ID
+    const sandboxes = await daytona.list();
+    const sandbox = sandboxes.find(s => s.id === sandboxId);
+    
+    if (!sandbox) {
+      console.error(`Sandbox ${sandboxId} not found`);
+      process.exit(1);
+    }
+
     console.log(`Removing sandbox: ${sandboxId}...`);
-    await daytona.remove(sandboxId);
+    await sandbox.delete();
     console.log("✓ Sandbox removed successfully");
   } catch (error: any) {
     console.error("Failed to remove sandbox:", error.message);
