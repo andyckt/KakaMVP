@@ -22,15 +22,15 @@ export default function MessageDisplay({ messages }: MessageDisplayProps) {
         const match = path.match(/\/app\/([^\/]+)\//);
         return match ? `/${match[1]}` : null;
       })
-      .filter(Boolean);
+      .filter((page): page is string => page !== null);
     
-    setGeneratedPages([...new Set(pages)]);
+    setGeneratedPages(Array.from(new Set(pages)));
   }, [messages]);
   
   if (messages.length === 0) return null;
   
   // Filter to show only assistant messages and tool uses
-  const displayMessages = messages.filter(m => 
+  const displayMessages = messages.filter((m: any) => 
     m.type === 'assistant' || m.type === 'tool_use' || m.type === 'result'
   );
   
@@ -77,7 +77,7 @@ export default function MessageDisplay({ messages }: MessageDisplayProps) {
             }
             
             // Tool uses - show as compact status
-            if (message.type === 'tool_use') {
+            if ((message as any).type === 'tool_use') {
               const toolName = (message as any).name;
               const input = (message as any).input;
               
