@@ -31,6 +31,22 @@ export default function GenerateContent() {
   const hasStartedRef = useRef(false);
   const [followUpInput, setFollowUpInput] = useState("");
   const [chatId, setChatId] = useState<string | null>(null);
+  const notificationSoundRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Initialize audio element
+  useEffect(() => {
+    notificationSoundRef.current = new Audio('/notification-sound.mp3');
+  }, []);
+  
+  // Function to play notification sound
+  const playNotificationSound = () => {
+    if (notificationSoundRef.current) {
+      notificationSoundRef.current.currentTime = 0; // Reset to start
+      notificationSoundRef.current.play().catch(err => {
+        console.error("Failed to play notification sound:", err);
+      });
+    }
+  };
   
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -109,6 +125,8 @@ export default function GenerateContent() {
                   setChatId(message.chatId);
                 }
                 setIsGenerating(false);
+                // Play notification sound when generation completes
+                playNotificationSound();
               } else {
                 setMessages((prev) => [...prev, message]);
               }
@@ -181,6 +199,9 @@ export default function GenerateContent() {
       if (updatedChat.demo && updatedChat.demo !== previewUrl) {
         setPreviewUrl(updatedChat.demo);
       }
+      
+      // Play notification sound when follow-up response is received
+      playNotificationSound();
       
     } catch (err: any) {
       console.error("Error sending follow-up message:", err);
