@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { v0Api } from "@/lib/v0-api";
+import QRCodeButton from "@/components/QRCodeButton";
 
 interface Message {
   type: "claude_message" | "tool_use" | "tool_result" | "progress" | "error" | "complete";
@@ -255,6 +256,10 @@ export default function GenerateContent() {
           </div>
         </Link>
         <div className="flex-1"></div>
+        {/* Add QR Code button when preview URL is available */}
+        {previewUrl && (
+          <QRCodeButton url={previewUrl} />
+        )}
       </div>
       
       <div className="flex-1 flex overflow-hidden">
