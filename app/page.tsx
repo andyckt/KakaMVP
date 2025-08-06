@@ -22,7 +22,7 @@ export default function Home() {
 
   const examplePrompts = [
     "高级牛排餐厅网站",
-    "创意摄影作品集",
+    "微信风格的社交平台",
     "现代化健身应用",
     "豪华酒店预订平台",
     "时尚服装品牌官网",
