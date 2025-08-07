@@ -3,15 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import QRCodeButton from "./QRCodeButton";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  
-  // Don't show QR code button on homepage
-  const showQRCode = pathname !== "/";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-effect">
@@ -35,7 +31,6 @@ export default function Navbar() {
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-4">
-            {showQRCode && <QRCodeButton className="mr-2" />}
             {/* <button className="text-gray-600 hover:text-gray-900 transition-colors" style={{ fontFamily: "'Times New Roman', serif", fontSize: "16px", fontWeight: 400 }}>登录</button> */}
             <button className="px-4 py-2 brand-gradient text-white rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl btn-hover-effect" style={{ fontFamily: "'Times New Roman', serif", fontSize: "16px", fontWeight: 400 }}>
               开始使用
@@ -44,7 +39,6 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
-            {showQRCode && <QRCodeButton />}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors"

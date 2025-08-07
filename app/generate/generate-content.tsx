@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { v0Api } from "@/lib/v0-api";
-import QRCodeButton from "@/components/QRCodeButton";
+import QRCodeDisplay from "@/components/QRCodeDisplay";
 
 interface Message {
   type: "claude_message" | "tool_use" | "tool_result" | "progress" | "error" | "complete";
@@ -256,10 +256,6 @@ export default function GenerateContent() {
           </div>
         </Link>
         <div className="flex-1"></div>
-        {/* Add QR Code button when preview URL is available */}
-        {previewUrl && (
-          <QRCodeButton url={previewUrl} />
-        )}
       </div>
       
       <div className="flex-1 flex overflow-hidden">
@@ -357,23 +353,28 @@ export default function GenerateContent() {
         </div>
         
         {/* Right side - Preview */}
-        <div className="w-[70%] bg-gray-50 flex items-center justify-center">
+        <div className="w-[70%] bg-gray-50 flex flex-col relative">
           {!previewUrl && isGenerating && (
-            <div className="text-center">
+            <div className="flex-1 flex items-center justify-center">
               <p className="text-gray-600" style={{ fontFamily: "'Times New Roman', serif" }}>预览加载中...</p>
             </div>
           )}
           
           {previewUrl && (
-            <iframe
-              src={previewUrl}
-              className="w-full h-full border-none"
-              title="预览"
-            />
+            <>
+              <iframe
+                src={previewUrl}
+                className="w-full h-full border-none"
+                title="预览"
+              />
+              <div className="absolute top-4 right-4 z-10">
+                <QRCodeDisplay url={previewUrl} />
+              </div>
+            </>
           )}
           
           {!previewUrl && !isGenerating && (
-            <div className="text-center">
+            <div className="flex-1 flex items-center justify-center">
               <p className="text-gray-600" style={{ fontFamily: "'Times New Roman', serif" }}>预览将在此处显示</p>
             </div>
           )}
